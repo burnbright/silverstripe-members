@@ -36,7 +36,7 @@ class SendTempPasswordDecorator extends DataObjectDecorator{
 	/** Adds 'send temp password' link **/
 	function updateCMSFields(FieldSet &$fields) {
 		//requirements: ajax link
-		if(!$this->called) //hack because member getCMSFields calls parent, which also has the extend->('updateCMSFields')
+		if(!$this->called && $this->owner->hasMethod("Link")) //hack because member getCMSFields calls parent, which also has the extend->('updateCMSFields')
 			$fields->addFieldToTab('Root.Actions',new LiteralField('TempPasswordLink','<a href="'.$this->owner->Link('sendnewpassword').'" target="new">send temp password</a>'));
 		$this->called = true;
 	}

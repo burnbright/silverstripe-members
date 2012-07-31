@@ -3,23 +3,27 @@ class MemberProfile extends Page_Controller{
 	
 	protected $member = null;
 	static $updatenotifications = false;
-	static $link = 'MemberProfile';
+	static $url_segment = 'profile';
 	
-	function init(){
-		parent::init();
-		$this->member = Controller::CurrentMember();
-		$this->Title = 'Member';
-	}
-	
-	static function set_link($l){
-		self::$link = $l;
-	}
 	static function notify_of_updates($notify = true){
 		self::$updatenotifications = $notify;
 	}
 	
 	function Link($action = ''){
-		return self::$link."/".$action;
+		return Controller::join_links(self::$url_segment,$action);
+	}
+	
+	function init(){
+		parent::init();
+		$this->member = Controller::CurrentMember();
+		$this->Title = 'Member';
+		if(!$this->member){
+			Security::permissionFailure($this);
+		}
+	}
+	
+	function getMember(){
+		return $this->member;
 	}
 	
 	function index(){
@@ -40,7 +44,6 @@ class MemberProfile extends Page_Controller{
 	}
 	
 	function EditProfileForm(){
-		
 		$fields = $this->member->getMemberFormFields();
 		$fields->push(new LiteralField('ChangePasswordLink','<div class="field"><p><a href="Security/changepassword">change password</a></p></div>'));
 		$fields->push(new HiddenField('ID','ID',$this->member->ID));
@@ -48,15 +51,12 @@ class MemberProfile extends Page_Controller{
 		$actions = new FieldSet(
 			new FormAction('updatedetails','Update')
 		);
-		
 		//TODO: add validator to check if changed email is taken
-		
 		$validator = new RequiredFields(
 			'FirstName',
 			'Surname',
 			'Email'
 		);
-		
 		$form =  new Form($this,"EditProfileForm",$fields,$actions,$validator);
 		$form->loadDataFrom($this->member);
 		$this->member->extend('updateEditProfileForm',$form);
@@ -64,14 +64,11 @@ class MemberProfile extends Page_Controller{
 	}
 	
 	function updatedetails($data,$form){
-		
 		$form->saveInto($this->member);
 		$this->member->write();
-		
 		if(self::$updatenotifications){
 			$name = $data['FirstName']." ".$data['Surname'];
 			$body = "$name has updated their details via the website. Here is the new information:<br/>";
-			
 			foreach($this->member->getAllFields() as $key => $field){
 				if(isset($data[$key])){
 					$body .= "<br/>$key: ".$data[$key];
@@ -81,7 +78,6 @@ class MemberProfile extends Page_Controller{
 			$email = new Email(Email::getAdminEmail(),Email::getAdminEmail(),"Member details update: $name",$body);
 			$email->send();
 		}
-		
 		$form->sessionMessage("Your member details have been updated.","good");
 		Director::redirect($this->Link('edit'));
 		return false;
@@ -89,7 +85,6 @@ class MemberProfile extends Page_Controller{
 	
 	function sendnewpassword(){
 		//TODO: add ajax support
-		
 		if(Director::urlParam('ID') && Permission::check('ADMIN') && $m = DataObject::get_by_id('Member',Director::urlParam('ID'))){
 			$m->sendTempPasswordEmail();
 			return array(
@@ -102,4 +97,3 @@ class MemberProfile extends Page_Controller{
 	}
 	
 }
-?>
