@@ -44,6 +44,7 @@ class MemberRegistrationForm extends Form{
 		
 		//Redirect
 		if($back = Session::get("BackURL")){
+			Session::clear("BackURL");
 			Director::redirect($back);
 			return;
 		}

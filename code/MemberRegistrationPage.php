@@ -8,8 +8,15 @@ class MemberRegistrationPage_Controller extends Page_Controller{
 		return Controller::join_links(Director::baseURL(),self::$url_segment,$action);
 	}
 	
+	function init(){
+		parent::init();
+		if($backurl = $this->getRequest()->getVar("BackURL")){
+			Session::set("BackURL", $backurl);
+		}
+	}
+	
 	function Title(){
-		return "Register";
+		return _t("MemberRegistrationPage.TITLE","Register");
 	}
 	
 	function Form(){
