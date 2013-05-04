@@ -1,5 +1,5 @@
 <?php
-class MemberProfileDecorator extends DataObjectDecorator{
+class MemberProfileDecorator extends DataExtension{
 	
 	function Link($action = 'show'){
 		if(!$action) $action = 'show';
@@ -7,4 +7,3 @@ class MemberProfileDecorator extends DataObjectDecorator{
 	}
 	
 }
-?>

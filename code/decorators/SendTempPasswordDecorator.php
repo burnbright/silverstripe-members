@@ -1,5 +1,5 @@
 <?php
-class SendTempPasswordDecorator extends DataObjectDecorator{
+class SendTempPasswordDecorator extends DataExtension{
 	
 	private $called = false;
 	
@@ -34,14 +34,12 @@ class SendTempPasswordDecorator extends DataObjectDecorator{
 	}
 	
 	/** Adds 'send temp password' link **/
-	function updateCMSFields(FieldSet &$fields) {
+	function updateCMSFields(FieldList $fields) {
 		//requirements: ajax link
 		if(!$this->called) //hack because member getCMSFields calls parent, which also has the extend->('updateCMSFields')
 			$fields->addFieldToTab('Root.Actions',new LiteralField('TempPasswordLink','<a href="'.$this->owner->Link('sendnewpassword').'" target="new">send temp password</a>'));
 		$this->called = true;
 	}
-	
 	//edit details form that removes the password expiry
 	
 }
-?>

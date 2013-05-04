@@ -34,7 +34,7 @@ class MemberProfile extends Page_Controller{
 			$this->Content = '<p>Update your details using this form.</p>';
 			$this->Form = $this->EditProfileForm();
 		}else{
-			Director::redirect(Director::absoluteBaseURL()); //if no member, then direct home
+			$this->redirect(Director::absoluteBaseURL()); //if no member, then direct home
 		}
 		return array();
 	}
@@ -83,7 +83,7 @@ class MemberProfile extends Page_Controller{
 		}
 		
 		$form->sessionMessage("Your member details have been updated.","good");
-		Director::redirect($this->Link('edit'));
+		$this->redirect($this->Link('edit'));
 		return false;
 	}
 	
@@ -97,7 +97,7 @@ class MemberProfile extends Page_Controller{
 				'Content' => 'A new password has been sent to '.$m->Email.'.'
 			);
 		}
-		Director::redirect(Director::absoluteBaseURL());
+		$this->redirect(Director::absoluteBaseURL());
 		return false;
 	}
 	
