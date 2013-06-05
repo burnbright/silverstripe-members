@@ -5,7 +5,7 @@
 	<div id="SearchForm_holder" class="leftbottom">		
 		<% if SearchClassSelector = tabs %>
 			<ul class="tabstrip">
-				<% control ModelForms %>
+				<% loop ModelForms %>
 					<li class="$FirstLast"><a id="tab-ModelAdmin_$Title.HTMLATT" href="#{$Form.Name}_$ClassName">$Title</a></li>
 				<% end_control %>
 			</ul>
@@ -15,14 +15,14 @@
 			<p id="ModelClassSelector">
 				<% _t('ModelAdmin.SEARCHFOR','Search for:') %>
 				<select>
-					<% control ModelForms %>
+					<% loop ModelForms %>
 						<option value="{$Form.Name}_$ClassName">$Title</option>
 					<% end_control %>
 				</select>
 			</p>
 		<% end_if %>
 		
-		<% control ModelForms %>
+		<% loop ModelForms %>
 			<div class="tab" id="{$Form.Name}_$ClassName">
 				$Content
 			</div>
