@@ -12,23 +12,19 @@ class MemberBulkLoader extends CsvBulkLoader {
 	
 	public $duplicateChecks = array(
       'Email' => 'Email' //TODO: allow this to become whatever Member::get_unique_identifier_field(); is
-   	);
+   );
 	
    static function importFirstAndLastName(&$obj, $val, $record) {
-      	$nameParts = explode(' ', trim($val));
+      $nameParts = explode(' ', trim($val));
 		$obj->FirstName = array_shift($nameParts);
 		$obj->Surname = join(' ', $nameParts);
    }
    
    protected function processRecord($record, $columnMap, &$results, $preview = false) {
-   		
    		//TODO:add callback for doing pre-load stuff
-   		$this->extend('preprocess',$record,$columnMap,&$results,$preview);
-   		
-		$id = parent::processRecord($record, $columnMap, &$results, $preview); 
-		
+   		$this->extend('preprocess',$record,$columnMap, $results,$preview);
+         $id = parent::processRecord($record, $columnMap, $results, $preview); 
    		$member = DataObject::get_by_id('Member',$id);
-
    		if(self::$groupname && $member){
    			Group::addToGroupByName($member,self::$groupname);
    		}
@@ -37,7 +33,7 @@ class MemberBulkLoader extends CsvBulkLoader {
 				$member->Created = date('Y-m-d H:i:s');
 			}   			
    			$member->write();
-   			$this->extend('postprocess',$member, $record, $columnMap, &$results, $preview);//callback for doing other custom stuff
+   			$this->extend('postprocess',$member, $record, $columnMap, $results, $preview);//callback for doing other custom stuff
    		}
    		return $id;
    }
@@ -48,6 +44,5 @@ class MemberBulkLoader extends CsvBulkLoader {
    static function set_import_group($group){
    		self::$groupname = $group;
    }
-}
 
-?>
+}
