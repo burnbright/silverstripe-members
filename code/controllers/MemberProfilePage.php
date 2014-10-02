@@ -2,11 +2,11 @@
 class MemberProfilePage_Controller extends Page_Controller{
 
 	private static $allowed_actions = array(
-		'index',
-		'edit' => 'ADMIN',
-		'EditProfileForm' => 'ADMIN',
-		'updatedetails' => 'ADMIN',
-		'sendpassword' => 'ADMIN'
+		'index' => true,
+		'edit' => '->canEditProfile',
+		'EditProfileForm' => '->canEditProfile',
+		'updatedetails' => '->canEditProfile',
+		'sendpassword' => '->canEditProfile'
 	);
 	
 	protected $member = null;
@@ -24,6 +24,13 @@ class MemberProfilePage_Controller extends Page_Controller{
 	function init(){
 		parent::init();
 		$this->member = Member::currentUser();
+		if(!$this->member){
+			Security::permissionFailure(
+				$this,
+				"You need to register or sign in before editing your profile."
+			);
+			return;
+		}
 		$this->Title = 'Member';
 	}
 	
@@ -50,7 +57,7 @@ class MemberProfilePage_Controller extends Page_Controller{
 		));
 		$fields->push(new HiddenField('ID','ID',$this->member->ID));
 		$fields->removeByName('Password');
-		$actions = new FieldSet(
+		$actions = new FieldList(
 			new FormAction('updatedetails','Update')
 		);
 		//TODO: add validator to check if changed email is taken
@@ -100,6 +107,10 @@ class MemberProfilePage_Controller extends Page_Controller{
 		}
 		$this->redirect(Director::absoluteBaseURL());
 		return false;
+	}
+
+	function canEditProfile(){
+		return (bool)Member::currentUserID();
 	}
 	
 }
