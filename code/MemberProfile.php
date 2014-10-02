@@ -1,35 +1,34 @@
 <?php
 class MemberProfile extends Page_Controller{
+
+	private static $allowed_actions = array(
+		'index' => 'ADMIN',
+		'edit' => 'ADMIN',
+		'EditProfileForm' => 'ADMIN',
+		'updatedetails' => 'ADMIN',
+		'sendpassword' => 'ADMIN'
+	);
 	
 	protected $member = null;
 	static $updatenotifications = false;
-	static $url_segment = 'profile';
+	private static $url_segment = 'profile';
 	
 	static function notify_of_updates($notify = true){
 		self::$updatenotifications = $notify;
 	}
 	
 	function Link($action = ''){
-		return Controller::join_links(self::$url_segment,$action);
+		return Controller::join_links(self::config()->url_segment, $action);
 	}
 	
 	function init(){
 		parent::init();
-		$this->member = Controller::CurrentMember();
+		$this->member = Member::currentUser();
 		$this->Title = 'Member';
-		if(!$this->member){
-			Security::permissionFailure($this);
-		}
 	}
 	
 	function getMember(){
 		return $this->member;
-	}
-	
-	function index(){
-		if(Member::currentUser())
-			return array('Content' => '<p><a href="'.$this->Link('edit').'">edit profile</a></p>');
-		return array();
 	}
 	
 	function edit(){

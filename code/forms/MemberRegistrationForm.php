@@ -1,6 +1,10 @@
 <?php
 
 class MemberRegistrationForm extends Form{
+
+	private static $allowed_actions = array(
+		'register'
+	);
 	
 	function __construct($controller,$name = "MemberRegistrationForm", $fields = null){
 		if(!$fields){
@@ -17,40 +21,38 @@ class MemberRegistrationForm extends Form{
 		
 		$fields->push(new ConfirmedPasswordField("Password"));
 		
-		$actions = new FieldSet(
+		$actions = new FieldList(
 			$register = new FormAction('register',"Register")		
 		);
 		$validator = new MemberRegistration_Validator(Member::get_unique_identifier_field(),'FirstName','Surname');
 		parent::__construct($controller, $name, $fields, $actions,$validator);
 		
 		if(class_exists('SpamProtectorManager')) {
-			SpamProtectorManager::update_form($this, null, array());
+			$this->enableSpamProtection();
 		}
 		
 		$this->extend('updateRegistration');
 	}
 	
-	function register($data,$form){
+	public function register($data, $form){
+
 		//log out existing user
 		if($member = Member::currentUser()){
 			$member->logOut();
 		}
 		
-		$member = Object::create("Member");
+		$member = Member::create();
 		$form->saveInto($member);
 		$member->write();
 		$this->extend('onRegister');
 		$member->logIn();
 		
-		//Redirect
 		if($back = Session::get("BackURL")){
 			Session::clear("BackURL");
-			Director::redirect($back);
-			return;
+			return $this->Controller()->redirect($back);
 		}
 		
-		Director::redirect($this->Controller()->Link());
-		return;
+		return $this->Controller()->redirect($this->Controller()->Link());
 	}
 	
 }
@@ -60,11 +62,12 @@ class MemberRegistration_Validator extends Member_Validator{
 	function php($data) {
 		$valid = parent::php($data);
 	
-		$identifierField = Member::get_unique_identifier_field();
+		$identifierField = Member::config()->unique_identifier_field;
 	
-		$SQL_identifierField = Convert::raw2sql($data[$identifierField]);
-		$member = DataObject::get_one('Member', "\"$identifierField\" = '{$SQL_identifierField}'");
-	
+		$member = Member::get()
+					->filter($identifierField, $data[$identifierField])
+					->first();
+
 		if(is_object($member) && $member->isInDB()) {
 			$uniqueField = $this->form->dataFieldByName($identifierField);
 			$this->validationError(
