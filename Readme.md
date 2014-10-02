@@ -18,6 +18,8 @@ Director:
     'register//$Action/$ID': 'MemberRegistrationPage_Controller'
 ```
 
+This will enable registering at `mysite.com/profile`.
+
 ## Member Profile Page
 
 Becasue the member profile page does not have (or need) a Page model. To add a profile page to your site, add the following to your _config.php:
@@ -27,6 +29,8 @@ Director:
   rules:
     'profile//$Action/$ID': 'MemberRegistrationPage_Controller'
 ```
+
+Once configured, you can edit your profile at `mysite.com/profile`.
 
 ## Temporary Password Email
 
