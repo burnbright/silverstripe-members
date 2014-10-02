@@ -1,3 +1,3 @@
 <?php
 
-Member::add_extension('SendTempPasswordDecorator');
+Member::add_extension('TemporaryPasswordExtension');

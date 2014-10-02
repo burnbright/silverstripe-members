@@ -1,25 +1,37 @@
 # SilverStripe Members Module
 
-Jeremy Shipman, Jedateach, jeremy [at] burnbright.net
+A simplified light-weight alternative to the [member profiles module](https://github.com/ajshort/silverstripe-memberprofiles). All configuration is handled by developer, rather than in CMS.
 
-Adds various extra member features
+Adds various (optional) extra member features. They will not all be enabled by default.
 
  * Registration page
- * Profile page
- * Send temp password
+ * Profile page for updating details.
+ * Send temporary password via email.
  
-Profile and Registration pages
+## Registration Page
 
-To add a profile page to your site, without creating an actual page,
-add the following to your _config.php:
+Becasue the registration page page does not have (or need) a Page model. Add the following director rules to your `_config/config.yml` file:
 
-	Director::addRules("10", array(
-		MemberProfile::$url_segment.'/$Action/$ID' => 'MemberProfile'	
-	));
+```yaml
+Director:
+  rules:
+    'register//$Action/$ID': 'MemberRegistrationPage_Controller'
+```
 
+## Member Profile Page
 
-And likewise for the registration page:
+Becasue the member profile page does not have (or need) a Page model. To add a profile page to your site, add the following to your _config.php:
 
-	Director::addRules("10", array(
-		MemberRegistrationPage_Controller::$url_segment.'/$Action/$ID' => 'MemberRegistrationPage_Controller'	
-	));
+```yaml
+Director:
+  rules:
+    'profile//$Action/$ID': 'MemberRegistrationPage_Controller'
+```
+
+## Temporary Password Email
+
+This is enabled by default.
+
+## Maintainer
+
+Jeremy Shipman, Jedateach, jeremy [at] burnbright.net
