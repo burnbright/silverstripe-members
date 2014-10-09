@@ -69,7 +69,7 @@ class MemberRegistration_Validator extends Member_Validator{
 					->first();
 
 		if(is_object($member) && $member->isInDB()) {
-			$uniqueField = $this->form->dataFieldByName($identifierField);
+			$uniqueField = $this->form->Fields()->dataFieldByName($identifierField);
 			$this->validationError(
 				$uniqueField->id(),
 				sprintf(
