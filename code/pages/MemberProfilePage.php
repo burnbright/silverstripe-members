@@ -1,4 +1,16 @@
 <?php
+
+class MemberProfilePage extends Page{
+
+	/**
+	 * Allow viewing draft site when page is fake.
+	 */
+	public function canViewStage($stage = 'Live', $member = null) {
+		return ($this->ID == -1) ? true : parent::canViewStage($stage, $member);
+	}
+
+}
+
 class MemberProfilePage_Controller extends Page_Controller{
 
 	private static $allowed_actions = array(
@@ -21,9 +33,11 @@ class MemberProfilePage_Controller extends Page_Controller{
 		return Controller::join_links(self::config()->url_segment, $action);
 	}
 	
-	function init(){
+	function init() {
 		parent::init();
-		$this->member = Member::currentUser();
+		if(!$this->member){
+			$this->member = Member::currentUser();
+		}
 		if(!$this->member){
 			Security::permissionFailure(
 				$this,
@@ -31,14 +45,25 @@ class MemberProfilePage_Controller extends Page_Controller{
 			);
 			return;
 		}
-		$this->Title = 'Member';
+	}
+
+	function getTitle(){
+		if($this->dataRecord->Title){
+			return $this->dataRecord->Title;
+		}
+		return $this->member->Name;
 	}
 	
-	function getMember(){
+	function getMember() {
 		return $this->member;
 	}
+
+	function setMember($member) {
+		$this->member = $member;
+		return $this;
+	}
 	
-	function edit(){		
+	function edit() {		
 		$this->Title = "Edit Profile";
 		$this->Content = '<p>Update your details using this form.</p>';
 		$this->Form = $this->EditProfileForm();
