@@ -1,6 +1,20 @@
 <?php
 
 class MembersDirectoryPage extends Page{
+
+	private static $has_one = array(
+		'Group' => 'Group'
+	);
+
+	function getCMSFields(){
+		$fields = parent::getCMSFields();
+		$fields->addFieldToTab("Root.Main",
+			DropdownField::create("GroupID","Group",
+				Group::get()->map()->toArray()
+			)->setHasEmptyDefault(true)
+		);
+		return $fields;
+	}
 	
 }
 
@@ -11,7 +25,13 @@ class MembersDirectoryPage_Controller extends Page_Controller{
 	);
 
 	function getMembers(){
-		return Member::get();
+		$members = Member::get();
+		$group = $this->Group();
+		if($group->exists()){
+			$members = $members->innerJoin("Group_Members", "Group_Members.MemberID = Member.ID")
+				->filter("Group_Members.GroupID", $group->ID);
+		}
+		return $members;
 	}
 
 	function view() {
@@ -23,7 +43,8 @@ class MembersDirectoryPage_Controller extends Page_Controller{
 				'ID' => -1,
 				'Content' => '',
 				'ParentID' => $this->ID,
-				'MemberID' => $member->ID
+				'MemberID' => $member->ID,
+				'URLSegment' => 'view/'.$member->ID
 			));
 			$cont = new MemberProfilePage_Controller($record);
 			$cont->setMember($member);
@@ -33,10 +54,9 @@ class MembersDirectoryPage_Controller extends Page_Controller{
 	}
 
 	protected function getMemberFromRequest(){
-		return Member::get()->byID(
+		return $this->getMembers()->byID(
 			(int)$this->request->param('ID')
 		);
 	}
-
 
 }

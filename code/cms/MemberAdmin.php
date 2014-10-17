@@ -9,4 +9,8 @@ class MemberAdmin extends ModelAdmin{
 		'Member'
 	);
 
+	private static $model_importers = array(
+		'Member' => 'MemberBulkLoader'
+	);
+
 }

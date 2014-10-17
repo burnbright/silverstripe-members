@@ -32,6 +32,15 @@ Director:
 
 Once configured, you can edit your profile at `mysite.com/profile`.
 
+### Update Notifications
+
+You can configure front-end member profile updates to be notified to the administrator via email.
+
+```yaml
+Member:
+    send_update_notifications: true
+```
+
 ## Temporary Password Email
 
 This is enabled by default.

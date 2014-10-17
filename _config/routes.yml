@@ -1,0 +1,7 @@
+---
+Name: members
+After: framework/routes#coreroutes
+---
+Director:
+  rules:
+    'profile//$Action/$ID/$Name': 'MemberProfilePage_Controller'

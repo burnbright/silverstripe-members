@@ -12,12 +12,13 @@ class MemberProfileExtension extends DataExtension{
 		);
 	}
 	
-	public function ProfileLink() {
+	public function ProfileLink($action = null) {
 		if($directorypage = MembersDirectoryPage::get()->first()){
 			return Controller::join_links(
 				$directorypage->Link(),
-				'view',
-				$this->owner->ID
+				"view",
+				$this->owner->ID,
+				$action
 			);
 		}
 	}
