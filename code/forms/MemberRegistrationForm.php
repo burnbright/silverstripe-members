@@ -24,8 +24,12 @@ class MemberRegistrationForm extends Form{
 		$actions = new FieldList(
 			$register = new FormAction('register',"Register")		
 		);
-		$validator = new MemberRegistration_Validator(Member::get_unique_identifier_field(),'FirstName','Surname');
-		parent::__construct($controller, $name, $fields, $actions,$validator);
+		$validator = new MemberRegistration_Validator(
+			Member::get_unique_identifier_field(),
+			'FirstName',
+			'Surname'
+		);
+		parent::__construct($controller, $name, $fields, $actions, $validator);
 		
 		if(class_exists('SpamProtectorManager')) {
 			$this->enableSpamProtection();
