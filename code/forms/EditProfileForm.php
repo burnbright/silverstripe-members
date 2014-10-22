@@ -20,7 +20,7 @@ class EditProfileForm extends Form{
 		);
 
 		//TODO: add validator to check if changed email is taken
-		$validator = new RequiredFields(
+		$validator = new Member_Validator(
 			'FirstName',
 			'Surname',
 			'Email'
