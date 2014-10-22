@@ -50,8 +50,8 @@ class EditProfileForm extends Form{
 			}
 		}
 		$email = new Email(
-			Email::getAdminEmail(),
-			Email::getAdminEmail(),
+			Email::config()->admin_email,
+			Email::config()->admin_email,
 			"Member details update: $name",
 			$body
 		);

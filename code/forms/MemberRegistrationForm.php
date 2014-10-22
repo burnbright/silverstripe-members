@@ -18,7 +18,6 @@ class MemberRegistrationForm extends Form{
 				)
 			));
 		}
-		
 		$fields->push(new ConfirmedPasswordField("Password"));
 		
 		$actions = new FieldList(
@@ -35,7 +34,7 @@ class MemberRegistrationForm extends Form{
 			$this->enableSpamProtection();
 		}
 		
-		$this->extend('updateRegistration');
+		$this->extend('updateMemberRegistrationForm');
 	}
 	
 	public function register($data, $form){
@@ -55,8 +54,11 @@ class MemberRegistrationForm extends Form{
 			Session::clear("BackURL");
 			return $this->Controller()->redirect($back);
 		}
+		if($link = $member->getProfileLink()){
+			return $this->controller->redirect($link);
+		}
 		
-		return $this->Controller()->redirect($this->Controller()->Link());
+		return $this->controller->redirect($this->controller->Link());
 	}
 	
 }
