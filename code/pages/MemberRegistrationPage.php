@@ -6,6 +6,7 @@ class MemberRegistrationPage_Controller extends Page_Controller{
 		'Form'
 	);
 	private static $url_segment = "register";
+	private static $enabled = true;
 	
 	function Link($action = null){
 		return Controller::join_links(
@@ -14,10 +15,13 @@ class MemberRegistrationPage_Controller extends Page_Controller{
 	}
 	
 	function init(){
-		parent::init();
+		if(!self::config()->enabled){
+			return $this->httpError(404);
+		}
 		if($backurl = $this->getRequest()->getVar("BackURL")){
 			Session::set("BackURL", $backurl);
 		}
+		parent::init();
 	}
 	
 	function Title(){

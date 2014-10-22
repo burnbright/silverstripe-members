@@ -22,6 +22,7 @@ class MemberProfilePage_Controller extends Page_Controller{
 	);
 
 	private static $url_segment = 'profile';
+	private static $enabled = true;
 
 	protected $member = null;
 	
@@ -33,8 +34,10 @@ class MemberProfilePage_Controller extends Page_Controller{
 	}
 	
 	public function init() {
+		if(!self::config()->enabled){
+			return $this->httpError(404);
+		}
 		parent::init();
-		
 		if(!$this->member){
 			$currentuser = Member::currentUser();
 			if(!$currentuser){

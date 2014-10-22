@@ -16,6 +16,8 @@ Becasue the registration page page does not have (or need) a Page model. Add the
 Director:
   rules:
     'register//$Action/$ID': 'MemberRegistrationPage_Controller'
+MemberRegistrationPage_Controller:
+    enabled: true
 ```
 
 This will enable registering at `mysite.com/profile`.
@@ -27,7 +29,9 @@ Becasue the member profile page does not have (or need) a Page model. To add a p
 ```yaml
 Director:
   rules:
-    'profile//$Action/$ID': 'MemberRegistrationPage_Controller'
+    'profile//$Action/$ID': 'MemberProfilePage_Controller'
+MemberProfilePage_Controller:
+    enabled: true
 ```
 
 Once configured, you can edit your profile at `mysite.com/profile`.
