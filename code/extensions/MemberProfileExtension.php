@@ -27,4 +27,30 @@ class MemberProfileExtension extends DataExtension{
 		);
 	}
 
+	//allow content editors to CVED (CRUD)
+
+	public function canCreate($member = null) {
+		if(Permission::check("CMS_ACCESS_CMSMain")){
+			return true;
+		}
+	}
+
+	public function canView($member = null) {
+		if(Permission::check("CMS_ACCESS_CMSMain")){
+			return true;
+		}
+	}
+
+	public function canEdit($member = null) {
+		if(Permission::check("CMS_ACCESS_CMSMain")){
+			return true;
+		}
+	}
+
+	public function canDelete($member = null) {
+		if(Permission::check("CMS_ACCESS_CMSMain")){
+			return true;
+		}
+	}
+
 }
