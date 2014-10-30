@@ -65,7 +65,7 @@ class MemberRegistrationForm extends Form{
 
 class MemberRegistration_Validator extends Member_Validator{
 	
-	function php($data) {
+	public function php($data) {
 		$valid = parent::php($data);
 	
 		$identifierField = Member::config()->unique_identifier_field;
