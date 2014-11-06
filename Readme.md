@@ -49,6 +49,19 @@ Member:
 
 This is enabled by default.
 
+## CSV Export Fields
+
+This module introduces a way to define `export_fields` to for CSV exporting in yaml:
+
+```yaml
+Member:
+  export_fields:
+    FirstName: 'First Name'
+    Surname: 'Last Name'
+    Organisation.Name: 'Business Name'
+    Email: 'Email Address'
+```
+
 ## Maintainer
 
 Jeremy Shipman, Jedateach, jeremy [at] burnbright.net

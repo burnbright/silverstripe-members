@@ -14,4 +14,18 @@ class MemberAdmin extends ModelAdmin{
 		'Member' => 'MemberBulkLoader'
 	);
 
+	public function getEditForm($id = null, $fields = null) {
+		$form = parent::getEditForm();
+
+		if($this->modelClass == "Member"){
+			if($columns = Member::config()->export_fields){
+				$form->Fields()->fieldByName("Member")->getConfig()
+					->getComponentByType("GridFieldExportButton")
+						->setExportColumns($columns);
+			}
+		}
+
+		return $form;
+	}
+
 }
