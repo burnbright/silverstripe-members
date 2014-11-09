@@ -9,10 +9,6 @@ class EditProfileForm extends Form{
 
 		$fields = $this->member->getMemberFormFields();
 
-		if($passwordfield = $this->getChangePasswordField()){
-			$fields->push($passwordfield);
-		}
-
 		$fields->push(new HiddenField('ID','ID',$this->member->ID));
 		$fields->removeByName('Password');
 		$actions = new FieldList(
@@ -26,6 +22,11 @@ class EditProfileForm extends Form{
 			'Email'
 		);
 		parent::__construct($controller, $name, $fields, $actions, $validator);
+
+		if($passwordfield = $this->getChangePasswordField()){
+			$fields->push($passwordfield);
+		}
+
 		$this->loadDataFrom($this->member);
 		$this->member->extend('updateEditProfileForm',$form);
 	}
@@ -58,13 +59,17 @@ class EditProfileForm extends Form{
 		$email->send();
 	}
 
-	protected function getChangePasswordField(){
+	protected function getChangePasswordField() {
 		if($this->member->ID != Member::currentUserID()){
 			return;
 		}
+		$backurl = Controller::join_links(
+			$this->controller->Link(),
+			"edit"
+		);
 		return new LiteralField('ChangePasswordLink', 
 			'<div class="field"><p>
-					<a href="Security/changepassword">change password</a>
+					<a href="Security/changepassword?BackURL='.$backurl.'">change password</a>
 				</p>
 			</div>'
 		);
