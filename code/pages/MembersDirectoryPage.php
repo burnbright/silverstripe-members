@@ -28,7 +28,7 @@ class MembersDirectoryPage extends Page{
 		$members = Member::get();
 		$group = $this->Group();
 		if($group->exists()){
-			$members = $members->innerJoin("Group_Members", "Group_Members.MemberID = Member.ID")
+			$members = $members->innerJoin("Group_Members", "\"Group_Members\".\"MemberID\" = \"Member\".\"ID\"")
 				->filter("Group_Members.GroupID", $group->ID);
 		}
 		$this->extend('updateMembersList', $members);
@@ -66,6 +66,10 @@ class MembersDirectoryPage_Controller extends Page_Controller{
 		return $this->httpError(404);
 	}
 
+	/**
+	 * Get an invidual member using the URL ID parameter
+	 * @return Member|null
+	 */
 	protected function getMemberFromRequest() {
 		return $this->getMembers()->byID(
 			(int)$this->request->param('ID')
