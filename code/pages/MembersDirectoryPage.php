@@ -1,19 +1,39 @@
 <?php
 
+/**
+ * Page for displaying members,
+ * and serving as a parent for viewing individual members.
+ */
 class MembersDirectoryPage extends Page{
 
 	private static $has_one = array(
 		'Group' => 'Group'
 	);
 
-	function getCMSFields(){
+	public function getCMSFields(){
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab("Root.Main",
 			DropdownField::create("GroupID","Group",
 				Group::get()->map()->toArray()
 			)->setHasEmptyDefault(true)
 		);
+
 		return $fields;
+	}
+
+	/**
+	 * Get the members list.
+	 */
+	public function getMembers(){
+		$members = Member::get();
+		$group = $this->Group();
+		if($group->exists()){
+			$members = $members->innerJoin("Group_Members", "Group_Members.MemberID = Member.ID")
+				->filter("Group_Members.GroupID", $group->ID);
+		}
+		$this->extend('updateMembersList', $members);
+
+		return $members;
 	}
 	
 }
@@ -24,17 +44,10 @@ class MembersDirectoryPage_Controller extends Page_Controller{
 		'view' => true
 	);
 
-	function getMembers(){
-		$members = Member::get();
-		$group = $this->Group();
-		if($group->exists()){
-			$members = $members->innerJoin("Group_Members", "Group_Members.MemberID = Member.ID")
-				->filter("Group_Members.GroupID", $group->ID);
-		}
-		return $members;
-	}
-
-	function view() {
+	/**
+	 * View an individual member.
+	 */
+	public function view() {
 		if($member = $this->getMemberFromRequest()) {
 			//shift the request params
 			$this->request->shiftAllParams();
@@ -50,10 +63,10 @@ class MembersDirectoryPage_Controller extends Page_Controller{
 			$cont->setMember($member);
 			return $cont;
 		}
-		$this->httpError(404);
+		return $this->httpError(404);
 	}
 
-	protected function getMemberFromRequest(){
+	protected function getMemberFromRequest() {
 		return $this->getMembers()->byID(
 			(int)$this->request->param('ID')
 		);
