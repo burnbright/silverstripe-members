@@ -28,7 +28,7 @@ class EditProfileForm extends Form{
 		}
 
 		$this->loadDataFrom($this->member);
-		$this->member->extend('updateEditProfileForm',$form);
+		$this->member->extend('updateEditProfileForm', $this);
 	}
 
 	public function updatedetails($data, $form) {
