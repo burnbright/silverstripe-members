@@ -12,7 +12,7 @@ class MemberProfileExtension extends DataExtension{
 		);
 	}
 	
-	public function ProfileLink($action = null) {
+	public function getProfileLink($action = null) {
 		if($directorypage = MembersDirectoryPage::get()->first()){
 			return Controller::join_links(
 				$directorypage->Link(),
