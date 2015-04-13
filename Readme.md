@@ -42,7 +42,16 @@ You can configure front-end member profile updates to be notified to the adminis
 
 ```yaml
 Member:
-    send_update_notifications: true
+    send_frontend_update_notifications: true
+```
+
+You can optionally restrict these notifications to only be sent when specific fields are changed.
+
+```yaml
+Member:
+    frontend_update_notification_fields: 
+      - Email
+      - Phone
 ```
 
 ## Temporary Password Email
