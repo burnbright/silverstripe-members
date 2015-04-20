@@ -34,29 +34,38 @@ class EditProfileForm extends Form{
 	public function updatedetails($data, $form) {
 		$form->saveInto($this->member);
 		if(Member::config()->send_frontend_update_notifications){
-			$this->sendUpdateNotification();
+			$this->sendUpdateNotification($data);
 		}
 		$this->member->write();
 		$form->sessionMessage("Your member details have been updated.", "good");
 		return $this->controller->redirectBack();
 	}
 
-	public function sendUpdateNotification() {
+	public function sendUpdateNotification($data) {
 		$name = $data['FirstName']." ".$data['Surname'];
 		$body = "$name has updated their details via the website. Here is the new information:<br/>";
-		foreach($this->member->getAllFields() as $key => $field){
-			if(isset($data[$key])){
-				$body .= "<br/>$key: ".$data[$key];
-				$body .= ($field != $data[$key])? "  <span style='color:red;'>(changed)</span>" : "";
+		$notifyOnFields = Member::config()->frontend_update_notification_fields ?: DataObject::database_fields('Member'); 
+		$changedFields = $this->member->getChangedFields(true, 2);
+		$send = false;
+
+		foreach($changedFields as $key => $field) {
+			if(in_array($key, $notifyOnFields)) {
+				$body .= "<br/><strong>$key:</strong><br/>" .
+					"<strike style='color:red;'>" . $field['before'] . "</strike><br/>" . 
+					"<span style='color:green;'>" . $field['after'] . "</span><br/>";
+				$send = true;
 			}
 		}
-		$email = new Email(
-			Email::config()->admin_email,
-			Email::config()->admin_email,
-			"Member details update: $name",
-			$body
-		);
-		$email->send();
+		
+		if($send){
+			$email = new Email(
+				Email::config()->admin_email,
+				Email::config()->admin_email,
+				"Member details update: $name",
+				$body
+			);
+			$email->send();
+		}
 	}
 
 	protected function getChangePasswordField() {
