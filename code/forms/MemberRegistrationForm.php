@@ -47,7 +47,7 @@ class MemberRegistrationForm extends Form{
 		$member = Member::create();
 		$form->saveInto($member);
 		$member->write();
-		$this->extend('onRegister');
+		$this->extend('onRegister',$member);
 		$member->logIn();
 		
 		if($back = Session::get("BackURL")){

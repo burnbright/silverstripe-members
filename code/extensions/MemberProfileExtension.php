@@ -21,10 +21,7 @@ class MemberProfileExtension extends DataExtension{
 				$action
 			);
 		}
-		return Controller::join_links(
-			Director::baseURL().MemberProfilePage_Controller::config()->url_segment,
-			$action
-		);
+		return Director::baseURL().MemberProfilePage_Controller::config()->url_segment;
 	}
 
 	//allow content editors to CVED (CRUD)
