@@ -1,5 +1,5 @@
 {
-	"name": "burnbright/silverstripe-members",
+	"name": "nimeso/silverstripe-members",
 	"description": "Silverstripe extra member features. Registration page, profile page, send temp password.",
 	"type": "silverstripe-module",
 	"license": "BSD-3-Clause",
