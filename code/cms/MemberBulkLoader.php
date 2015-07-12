@@ -23,9 +23,9 @@ class MemberBulkLoader extends CsvBulkLoader {
    protected function processRecord($record, $columnMap, &$results, $preview = false) {
    		
    		//TODO:add callback for doing pre-load stuff
-   		$this->extend('preprocess',$record,$columnMap,&$results,$preview);
+   		$this->extend('preprocess',$record,$columnMap,$results,$preview);
    		
-		$id = parent::processRecord($record, $columnMap, &$results, $preview); 
+		$id = parent::processRecord($record, $columnMap, $results, $preview); 
 		
    		$member = DataObject::get_by_id('Member',$id);
 
@@ -37,7 +37,7 @@ class MemberBulkLoader extends CsvBulkLoader {
 				$member->Created = date('Y-m-d H:i:s');
 			}   			
    			$member->write();
-   			$this->extend('postprocess',$member, $record, $columnMap, &$results, $preview);//callback for doing other custom stuff
+   			$this->extend('postprocess',$member, $record, $columnMap, $results, $preview);//callback for doing other custom stuff
    		}
    		return $id;
    }
