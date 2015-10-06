@@ -10,7 +10,7 @@ Adds various (optional) extra member features. They will not all be enabled by d
  
 ## Registration Page
 
-Becasue the registration page page does not have (or need) a Page model. Add the following director rules to your `_config/config.yml` file:
+Because the registration page page does not have (or need) a Page model. Add the following director rules to your `_config/config.yml` file:
 
 ```yaml
 Director:
@@ -24,7 +24,7 @@ This will enable registering at `mysite.com/profile`.
 
 ## Member Profile Page
 
-Becasue the member profile page does not have (or need) a Page model. To add a profile page to your site, add the following to your _config.php:
+Because the member profile page does not have (or need) a Page model. To add a profile page to your site, add the following to your _config.php:
 
 ```yaml
 Director:
