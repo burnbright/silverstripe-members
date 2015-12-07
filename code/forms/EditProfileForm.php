@@ -77,8 +77,8 @@ class EditProfileForm extends Form{
 			"edit"
 		);
 		return new LiteralField('ChangePasswordLink', 
-			'<div class="field"><p>
-					<a href="Security/changepassword?BackURL='.$backurl.'">change password</a>
+			'<div class="field change-pwd"><p>
+					<a href="Security/changepassword?BackURL='.$backurl.'">Skift adgangskode</a>
 				</p>
 			</div>'
 		);
