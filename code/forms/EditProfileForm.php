@@ -37,7 +37,7 @@ class EditProfileForm extends Form{
 			$this->sendUpdateNotification($data);
 		}
 		$this->member->write();
-		$form->sessionMessage("Your member details have been updated.", "good");
+		$form->sessionMessage("Din profil er blevet opdateret.", "good");
 		return $this->controller->redirectBack();
 	}
 
