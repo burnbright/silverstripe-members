@@ -70,7 +70,3 @@ Member:
     Organisation.Name: 'Business Name'
     Email: 'Email Address'
 ```
-
-## Maintainer
-
-Jeremy Shipman, Jedateach, jeremy [at] burnbright.net
