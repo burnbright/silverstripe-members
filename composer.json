@@ -1,5 +1,5 @@
 {
-	"name": "sanderha/silverstripe-members",
+	"name": "burnbright/silverstripe-members",
 	"description": "Silverstripe extra member features. Registration page, profile page, send temp password.",
 	"type": "silverstripe-module",
 	"license": "BSD-3-Clause",
@@ -14,11 +14,6 @@
 		{
 			"name": "Jeremy Shipman",
 			"homepage": "https://github.com/jedateach",
-			"role": "Developer"
-		},
-		{
-			"name": "Sander Hagenaars",
-			"homepage": "https://github.com/Sanderha",
 			"role": "Developer"
 		}
 	]

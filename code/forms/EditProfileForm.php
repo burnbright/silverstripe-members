@@ -37,7 +37,7 @@ class EditProfileForm extends Form{
 			$this->sendUpdateNotification($data);
 		}
 		$this->member->write();
-		$form->sessionMessage("Din profil er blevet opdateret.", "good");
+		$form->sessionMessage("Your member details have been updated.", "good");
 		return $this->controller->redirectBack();
 	}
 
@@ -77,8 +77,8 @@ class EditProfileForm extends Form{
 			"edit"
 		);
 		return new LiteralField('ChangePasswordLink', 
-			'<div class="field change-pwd"><p>
-					<a href="Security/changepassword?BackURL='.$backurl.'">Skift adgangskode</a>
+			'<div class="field"><p>
+					<a href="Security/changepassword?BackURL='.$backurl.'">change password</a>
 				</p>
 			</div>'
 		);
