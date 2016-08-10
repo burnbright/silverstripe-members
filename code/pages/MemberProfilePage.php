@@ -88,7 +88,7 @@ class MemberProfilePage_Controller extends Page_Controller{
 	}
 	
 	public function EditProfileForm(){
-		return new EditProfileForm($this, "EditProfileForm", $this->member);
+		return EditProfileForm::create($this, "EditProfileForm", $this->member);
 	}
 	
 	public function canEditProfile(){
