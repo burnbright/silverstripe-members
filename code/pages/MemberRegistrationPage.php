@@ -29,7 +29,7 @@ class MemberRegistrationPage_Controller extends Page_Controller{
 	}
 	
 	function Form(){
-		return new MemberRegistrationForm($this, "Form");
+		return MemberRegistrationForm::create($this, "Form");
 	}
 	
 } 
